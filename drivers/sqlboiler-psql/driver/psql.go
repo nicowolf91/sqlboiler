@@ -785,8 +785,10 @@ func (p *PostgresDriver) TranslateColumnType(c drivers.Column) drivers.Column {
 			c.Type = "null.Float64"
 		case "real":
 			c.Type = "null.Float32"
-		case "bit", "interval", "bit varying", "character", "money", "character varying", "cidr", "inet", "macaddr", "text", "uuid", "xml":
+		case "bit", "interval", "bit varying", "character", "money", "character varying", "cidr", "inet", "macaddr", "text", "xml":
 			c.Type = "null.String"
+		case "uuid":
+			c.Type = "uuid.NullUUID"
 		case `"char"`:
 			c.Type = "null.Byte"
 		case "bytea":
@@ -850,8 +852,10 @@ func (p *PostgresDriver) TranslateColumnType(c drivers.Column) drivers.Column {
 			c.Type = "float64"
 		case "real":
 			c.Type = "float32"
-		case "bit", "interval", "uuint", "bit varying", "character", "money", "character varying", "cidr", "inet", "macaddr", "text", "uuid", "xml":
+		case "bit", "interval", "uuint", "bit varying", "character", "money", "character varying", "cidr", "inet", "macaddr", "text", "xml":
 			c.Type = "string"
+		case "uuid":
+			c.Type = "uuid.UUID"
 		case `"char"`:
 			c.Type = "types.Byte"
 		case "json", "jsonb":
@@ -1127,6 +1131,9 @@ func (p PostgresDriver) Imports() (importers.Collection, error) {
 		},
 		"pgeo.NullCircle": {
 			ThirdParty: importers.List{`"github.com/volatiletech/sqlboiler/v4/types/pgeo"`},
+		},
+		"uuid.UUID": {
+			ThirdParty: importers.List{`"github.com/google/uuid"`},
 		},
 	}
 
